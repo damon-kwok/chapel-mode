@@ -499,7 +499,7 @@ Optional argument BUILD ."
   (font-lock-flush)
   ;;
   (setq-local indent-tabs-mode nil)
-  (setq-local tab-width 4)
+  (setq-local tab-width 2)
   (setq-local buffer-file-coding-system 'utf-8-unix)
   ;;
   (setq-local imenu-generic-expression ;;
@@ -508,7 +508,7 @@ Optional argument BUILD ."
        ("iter" "[ \t]*iter[ \t]+\\([A-Za-z0-9_]+\\)" 1)
        ("class" "^[ \t]*class[ \t]+\\([A-Za-z0-9_]+\\)" 1)
        ("record" "^[ \t]*interface[ \t]+\\([A-Za-z0-9_]+\\)" 1)
-       ("type" "^[ \t]*type[ \t]+\\([A-Za-z0-9_]+\\)" 1)
+       ("type" "^[ \t]*type[ \t]+\\([A-Za-z0-9_]+\\)$" 1)
        ("enum" "^[ \t]*enum[ \t]+\\([A-Za-z0-9_]+\\)" 1)
        ("import" "^[ \t]*import[ \t]+\\([A-Za-z0-9_]+\\)" 1)
        ("require" "^[ \t]*require[ \t]+\\([A-Za-z0-9_]+\\)" 1)
