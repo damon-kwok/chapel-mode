@@ -30,7 +30,8 @@ An Emacs major mode for the [Chapel](https://chapel-lang.org/) programming langu
 
 ## Installation
 
-### Using MELPA ([COMING SOON](https://github.com/melpa/melpa/pull/7031))
+### ~~Using MELPA~~
+<!-- ([COMING SOON](https://github.com/melpa/melpa/pull/7031)) -->
 ~~This package can be obtain from
 [MELPA](http://melpa.org/#/chapel-mode) or
 [MELPA Stable](http://stable.melpa.org/#/chapel-mode). The `master`
