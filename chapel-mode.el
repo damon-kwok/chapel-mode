@@ -454,8 +454,8 @@ Optional argument PATH ."
           (ctags-params                 ;
             (concat
               "ctags --languages=-chapel --langdef=chapel --langmap=chapel:.chpl "
-              "--regex-chapel='/^[ \\t]*proc[ \\t]+([A-Za-z0-9_]+)/\\1/p,proc/' "
-              "--regex-chapel='/^[ \\t]*iter[ \\t]+([A-Za-z0-9_]+)/\\1/i,iter/' "
+              "--regex-chapel='/[ \\t]*proc[ \\t]+([A-Za-z0-9_]+)/\\1/p,proc/' "
+              "--regex-chapel='/[ \\t]*iter[ \\t]+([A-Za-z0-9_]+)/\\1/i,iter/' "
               "--regex-chapel='/^[ \\t]*struct[ \\t]+([A-Za-z0-9_]+)/\\1/s,struct/' "
               "--regex-chapel='/^[ \\t]*record[ \\t]+([A-Za-z0-9_]+)/\\1/r,record/' "
               "--regex-chapel='/^[ \\t]*class[ \\t]+([A-Za-z0-9_]+)/\\1/c,class/' "
