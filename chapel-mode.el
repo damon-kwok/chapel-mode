@@ -3,7 +3,7 @@
 ;; Authors: Damon Kwok <damon-kwok@outlook.com>
 ;; Version: 0.0.1
 ;; URL: https://github.com/damon-kwok/chapel-mode
-;; Keywords: languages programming
+;; Keywords: chapel chpl programming languages
 ;; Package-Requires: ((emacs "25.1") (hydra "0.15.0"))
 
 ;; This program is free software; you can redistribute it and/or modify
