@@ -84,6 +84,10 @@
     ;; Don't treat underscores as whitespace
     (modify-syntax-entry ?_ "w" table) table))
 
+(defconst chapel-indent-keywords
+  '("catch" "do" "else" "finally" "for" "if" "then" "try" "while" "with" "each")
+  "Chapel keywords which indicate a new indentation level.")
+
 (defconst chapel-keywords
   '("var" "let" "const" "param"
      ;;
@@ -107,26 +111,26 @@
   "Chapel preprocessor keywords.")
 
 (defconst chapel-careful-keywords
-  '("use" "import" "require"                 ;
-     "on"                                    ;
-     "sync" "single" "atomic" "serial"       ;
-     "begin" "cobegin" "coforall" "forall"   ;
-     "break" "continue" "label" "return" "yield"     ;
-     "new" "delete" "opaque"                 ;
-     "owned" "shared" "unmanaged" "borrowed" ;
-     "lifetime" "where"                      ;
-     "sparse"                                ;
-     "in" "out" "inout" "ref"                ;
-     "halt" "compilerError"                  ;
-     "defer"                                 ;
-     "try" "catch" "throws"                  ;
-     "receiver"                              ;
+  '("use" "import" "require"                     ;
+     "on"                                        ;
+     "sync" "single" "atomic" "serial"           ;
+     "begin" "cobegin" "coforall" "forall"       ;
+     "break" "continue" "label" "return" "yield" ;
+     "new" "delete" "opaque"                     ;
+     "owned" "shared" "unmanaged" "borrowed"     ;
+     "lifetime" "where"                          ;
+     "sparse"                                    ;
+     "in" "out" "inout" "ref"                    ;
+     "halt" "compilerError"                      ;
+     "defer"                                     ;
+     "try" "catch" "throws"                      ;
+     "receiver"                                  ;
      "channel" "domain")
   "Chapel language careful keywords.")
 
 (defconst chapel-builtin-keywords
   '("void" "noting"                                               ;
-     "enum" "union"                              ;
+     "enum" "union"                                               ;
      "bool" "int" "uint" "real" "imag" "complex" "string" "range" ;
      "c_int" "c_uint" "c_long" "c_ulong" "c_longlong" "c_ulonglong" "c_char"
      "c_schar" "c_uchar" "c_short" "c_ushort"  ;
@@ -499,6 +503,8 @@ Optional argument BUILD ."
   ;;
   (setq-local electric-indent-chars (append "{}():;," electric-indent-chars))
   (setq-local js-indent-level tab-width)
+  (setq-local js--possibly-braceless-keyword-re ;;
+    (js--regexp-opt-symbol chapel-indent-keywords))
   (setq-local indent-line-function #'js-indent-line)
   ;;
   (setq-local font-lock-defaults '(chapel-font-lock-keywords))
