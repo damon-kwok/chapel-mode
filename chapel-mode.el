@@ -450,22 +450,23 @@ Optional argument PATH ."
                                                                      "readlink -f "
                                                                      chapel-path))))
           (packages-path (concat (file-name-directory chapel-executable)
-                           "modules"))
+                           "../../modules"))
           (ctags-params                 ;
             (concat
               "ctags --languages=-chapel --langdef=chapel --langmap=chapel:.chpl "
-              "--regex-chapel=/^[ \\t]*proc[ \\t]+([A-Za-z0-9_]+)/\\1/p,proc/ "
-              "--regex-chapel=/^[ \\t]*iter[ \\t]+([A-Za-z0-9_]+)/\\1/i,iter/ "
-              "--regex-chapel=/^[ \\t]*struct[ \\t]+([A-Za-z0-9_]+)/\\1/s,struct/ "
-              "--regex-chapel=/^[ \\t]*record[ \\t]+([A-Za-z0-9_]+)/\\1/r,record/ "
-              "--regex-chapel=/^[ \\t]*class[ \\t]+([A-Za-z0-9_]+)/\\1/c,class/ "
-              "--regex-chapel=/^[ \\t]*type[ \\t]+([A-Za-z0-9_]+)/\\1/t,type/ "
-              "--regex-chapel=/^[ \\t]*enum[ \\t]+([A-Za-z0-9_]+)/\\1/e,enum/ "
-              "--regex-chapel=/^[ \\t]*module[ \\t]+([A-Za-z0-9_]+)/\\1/m,module/ " ;
-              "-e -R . " packages-path)))
+              "--regex-chapel='/^[ \\t]*proc[ \\t]+([A-Za-z0-9_]+)/\\1/p,proc/' "
+              "--regex-chapel='/^[ \\t]*iter[ \\t]+([A-Za-z0-9_]+)/\\1/i,iter/' "
+              "--regex-chapel='/^[ \\t]*struct[ \\t]+([A-Za-z0-9_]+)/\\1/s,struct/' "
+              "--regex-chapel='/^[ \\t]*record[ \\t]+([A-Za-z0-9_]+)/\\1/r,record/' "
+              "--regex-chapel='/^[ \\t]*class[ \\t]+([A-Za-z0-9_]+)/\\1/c,class/' "
+              "--regex-chapel='/^[ \\t]*type[ \\t]+([A-Za-z0-9_]+)/\\1/t,type/' "
+              "--regex-chapel='/^[ \\t]*enum[ \\t]+([A-Za-z0-9_]+)/\\1/e,enum/' "
+              "--regex-chapel='/^[ \\t]*module[ \\t]+([A-Za-z0-9_]+)/\\1/m,module/' " ;
+              "-h \".chpl\" -e -R . " packages-path " >/dev/null 2>&1")))
     (when (file-exists-p packages-path)
       (setq default-directory (chapel-project-root))
-      (message "ctags:%s" (shell-command-to-string ctags-params))
+      ;; (message "ctags:%s" (shell-command-to-string ctags-params))
+      (shell-command ctags-params)
       (chapel-load-tags))))
 
 (defun chapel-load-tags
