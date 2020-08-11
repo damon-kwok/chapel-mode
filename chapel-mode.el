@@ -235,8 +235,8 @@
        'font-lock-variable-name-face)
 
      ;; variable values
-     ("\\(var\\|const\\|let\\)[ \t]+\\([A-Za-z0-9_]+\\)[ \t]*:[ \t]*\\([A-Za-z0-9_]+\\)" 3
-       'font-lock-variable-name-face)
+     ("\\(var\\|const\\|let\\)[ \t]+\\([A-Za-z0-9_]+\\)[ \t]*:[ \t]*\\([A-Za-z0-9_]+\\)"
+       3 'font-lock-variable-name-face)
 
      ;; type references
      ("[^a-z]\\([A-Z][A-Za-z0-9_]*\\)\\." 1 'font-lock-type-face)
@@ -483,15 +483,17 @@ Optional argument BUILD ."
   "Format the current buffer using the 'chpl fmt'."
   (interactive)
   (when (eq major-mode 'chapel-mode)
-    (shell-command (concat  "chpl fmt " (buffer-file-name)))
-    (revert-buffer
-      :ignore-auto
-      :noconfirm)))
+    ;; (shell-command (concat  "chpl fmt " (buffer-file-name)))
+    ;; (revert-buffer :ignore-auto :noconfirm)
+    (js-mode)
+    (indent-region (point-min)
+      (point-max))
+    (chapel-mode)))
 
 (defun chapel-after-save-hook ()
   "After save hook."
   (when (eq major-mode 'chapel-mode)
-    ;; (chapel-format-buffer)
+    (chapel-format-buffer)
     (if (not (executable-find "ctags"))
       (message "Could not locate executable '%s'" "ctags")
       (chapel-build-tags))))
