@@ -234,6 +234,9 @@
      ("\\(var\\|const\\|let\\|param\\|type\\)[ \t]+\\([A-Za-z0-9_]+\\)" 2
        'font-lock-variable-name-face)
 
+     ;; method references
+     ("\\([A-Za-z0-9_]*\\)[ \t]*(" 1 'font-lock-function-name-face)
+
      ;; variable values
      ("\\(var\\|const\\|let\\)[ \t]+\\([A-Za-z0-9_]+\\)[ \t]*:[ \t]*\\([A-Za-z0-9_]+\\)"
        3 'font-lock-variable-name-face)
@@ -242,15 +245,12 @@
      ("[^a-z]\\([A-Z][A-Za-z0-9_]*\\)\\." 1 'font-lock-type-face)
      (":[ \t]\\([A-Za-z_][A-Za-z0-9_]*\\)" 1 'font-lock-type-face)
 
-     ;; method references
-     ("\\([A-Za-z0-9_]*\\)[ \t]*(" 1 'font-lock-function-name-face)
-
      ;; variable references
      ("\\([a-z_][A-Za-z_0-9$]*\\)" 1 'font-lock-variable-name-face)
 
      ;; delimiter: modifier
-     ("\\(!=\\)" 1 'font-lock-warning-face)
-     ("\\(->\\|=>\\|\\.>\\|:>\\|:=\\|\\.\\.\\||\\)" 1 'font-lock-keyword-face)
+     ("\\(!=\\|\\.\\.\\.\\|\\.\\.\\)" 1 'font-lock-warning-face)
+     ("\\(->\\|=>\\|\\.>\\|:>\\|:=\\||\\)" 1 'font-lock-keyword-face)
 
      ;; delimiter: . , ; separate
      ("\\($?[.,;]+\\)" 1 'font-lock-comment-delimiter-face)
