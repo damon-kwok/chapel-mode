@@ -89,7 +89,7 @@
      "lambda" "on" "otherwise" "proc" "select" ;
      "then" "try" "when" "while" "with"        ;
      "config" "prototype" "inline" "override"  ;
-     "public" "private" "pragma"               ;
+     "public" "private"                        ;
      "extern" "export" "local"                 ;
      "let" "var" "const" "param"               ;
      "throws" "ref" "type" "module")
