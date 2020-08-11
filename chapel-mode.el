@@ -85,7 +85,14 @@
     (modify-syntax-entry ?_ "w" table) table))
 
 (defconst chapel-indent-keywords
-  '("catch" "do" "else" "finally" "for" "if" "then" "try" "while" "with" "each")
+  '("catch" "do" "else" "for" "if" "in" "iter" ;
+     "lambda" "on" "otherwise" "proc" "select" ;
+     "then" "try" "when" "while" "with"        ;
+     "config" "prototype" "inline" "override"  ;
+     "public" "private" "pragma"               ;
+     "extern" "export" "local"                 ;
+     "let" "var" "const" "param"               ;
+     "throws" "ref" "type" "module")
   "Chapel keywords which indicate a new indentation level.")
 
 (defconst chapel-keywords
