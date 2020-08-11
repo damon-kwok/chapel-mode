@@ -236,7 +236,7 @@
 
      ;; type references
      ("[^a-z]\\([A-Z][A-Za-z0-9_]*\\)\\." 1 'font-lock-type-face)
-     (":[ \t]\\([A-Z][A-Za-z0-9_]*\\)" 1 'font-lock-type-face)
+     (":[ \t]\\([A-Za-z_][A-Za-z0-9_]*\\)" 1 'font-lock-type-face)
 
      ;; method references
      ("\\([A-Za-z0-9_]*\\)[ \t]*(" 1 'font-lock-function-name-face)
