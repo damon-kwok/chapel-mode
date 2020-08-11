@@ -492,15 +492,18 @@ Optional argument BUILD ."
   (setq-local comment-start "/*")
   (setq-local comment-end "*/")
   (setq-local comment-start-skip "\\(//+\\|/\\*+\\)\\s *")
-  (setq-local electric-indent-chars (append "{}():;," electric-indent-chars))
-  (setq-local indent-line-function #'js-indent-line)
-  ;;
-  (setq-local font-lock-defaults '(chapel-font-lock-keywords))
-  (font-lock-flush)
   ;;
   (setq-local indent-tabs-mode nil)
   (setq-local tab-width 2)
   (setq-local buffer-file-coding-system 'utf-8-unix)
+  ;;
+  (setq-local electric-indent-chars (append "{}():;," electric-indent-chars))
+  (setq-local js-indent-level tab-width)
+  (setq-local indent-line-function #'js-indent-line)
+  ;;
+  (setq-local font-lock-defaults '(chapel-font-lock-keywords))
+  (font-lock-flush)
+
   ;;
   (setq-local imenu-generic-expression ;;
     '(("TODO" ".*TODO:[ \t]*\\(.*\\)$" 1)
