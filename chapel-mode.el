@@ -111,7 +111,7 @@
      "on"                                    ;
      "sync" "single" "atomic" "serial"       ;
      "begin" "cobegin" "coforall" "forall"   ;
-     "break" "continue" "return" "yield"     ;
+     "break" "continue" "label" "return" "yield"     ;
      "new" "delete" "opaque"                 ;
      "owned" "shared" "unmanaged" "borrowed" ;
      "lifetime" "where"                      ;
