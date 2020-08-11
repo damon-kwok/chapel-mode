@@ -13,10 +13,10 @@ An Emacs major mode for the [Chapel](https://chapel-lang.org/) programming langu
 
 ## Features
 
-- [X] Syntax highlighting (font-lock)
-- [X] Indentation
+- [x] Syntax highlighting (font-lock)
+- [x] Indentation
 - [x] Workspace support
-- [ ] Auto format on save
+- [x] Auto format on save
 - [x] Compilation integration
 - [x] Code navigation (using `imenu`)
 - [x] Go to definition (using `ctags`)
