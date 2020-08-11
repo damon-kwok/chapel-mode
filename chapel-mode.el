@@ -97,7 +97,7 @@
      "with")
   "Chapel language keywords.")
 
-(defconst chapel-declaration-keywords '("type" "module")
+(defconst chapel-declaration-keywords '("type" "module" "record" "class")
   "Chapel declaration keywords.")
 
 (defconst chapel-preprocessor-keywords
@@ -126,7 +126,7 @@
 
 (defconst chapel-builtin-keywords
   '("void" "noting"                                               ;
-     "enum" "record" "class" "union"                              ;
+     "enum" "union"                              ;
      "bool" "int" "uint" "real" "imag" "complex" "string" "range" ;
      "c_int" "c_uint" "c_long" "c_ulong" "c_longlong" "c_ulonglong" "c_char"
      "c_schar" "c_uchar" "c_short" "c_ushort"  ;
@@ -188,7 +188,7 @@
 (defconst chapel-font-lock-keywords
   `(
      ;; bytes
-     ("\\(b\\)\"" 1 'font-lock-warning-face)
+     ("\\(b\\)\"" 1 'font-lock-constant-face)
 
      ;; builtin
      (,chapel-builtin-keywords-regexp . font-lock-builtin-face)
