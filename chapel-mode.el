@@ -462,7 +462,7 @@ Optional argument PATH ."
               "--regex-chapel='/^[ \\t]*type[ \\t]+([A-Za-z0-9_]+)/\\1/t,type/' "
               "--regex-chapel='/^[ \\t]*enum[ \\t]+([A-Za-z0-9_]+)/\\1/e,enum/' "
               "--regex-chapel='/^[ \\t]*module[ \\t]+([A-Za-z0-9_]+)/\\1/m,module/' " ;
-              "-h \".chpl\" -e -R . " packages-path " >/dev/null 2>&1")))
+              "-e -R . " packages-path " >/dev/null 2>&1")))
     (when (file-exists-p packages-path)
       (setq default-directory (chapel-project-root))
       ;; (message "ctags:%s" (shell-command-to-string ctags-params))
