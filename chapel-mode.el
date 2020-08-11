@@ -230,8 +230,12 @@
      ("\\(proc\\|iter\\)[ \t]+\\([A-Za-z0-9_]+\\)" 2
        'font-lock-function-name-face)
 
-     ;; var definitions
+     ;; variable/params definitions
      ("\\(var\\|const\\|let\\|param\\|type\\)[ \t]+\\([A-Za-z0-9_]+\\)" 2
+       'font-lock-variable-name-face)
+
+     ;; variable values
+     ("\\(var\\|const\\|let\\)[ \t]+\\([A-Za-z0-9_]+\\)[ \t]*:[ \t]*\\([A-Za-z0-9_]+\\)" 3
        'font-lock-variable-name-face)
 
      ;; type references
