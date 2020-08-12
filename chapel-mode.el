@@ -52,11 +52,41 @@
 (require 'imenu)
 (require 'easymenu)
 
+(defgroup chapel nil
+  "Support for Chapel code."
+  :link '(url-link "https://chapel-lang.org/")
+  :group 'languages)
+
+(defcustom chapel-indent-offset 2
+  "Indent Chapel code by this number of spaces."
+  :type 'integer
+  :safe #'integerp
+  :group 'chapel)
+
+(defcustom chapel-format-on-save t
+  "Format buffers before saving."
+  :type 'boolean
+  :safe #'booleanp
+  :group 'chapel)
+
+(defcustom chapel-use-ctags t
+  "Build TAGS file after saving."
+  :type 'boolean
+  :safe #'booleanp
+  :group 'chapel)
+
+(defcustom chapel-chapel-bin "chpl"
+  "Path to chpl executable."
+  :type 'string
+  :safe #'stringp
+  :group 'chapel)
+
 (defvar chapel-mode-hook nil)
 
 (defvar chapel-mode-map
   (let ((map (make-keymap)))
-    (define-key map "\C-j" 'newline-and-indent) map)
+    (define-key map (kbd "C-c C-f") 'chapel-format-buffer) ;
+    map)
   "Keymap for Chapel major mode.")
 
 (defconst chapel-mode-syntax-table
@@ -335,19 +365,19 @@ Optional argument PATH ."
   (interactive)
   (if (chapel-project-file-exists-p "Makefile")
     (chapel-run-command "make")
-    (chapel-run-command "chpl .")))
+    (chapel-run-command (concat chapel-chapel-bin " -c " (buffer-name)))))
 
 (defun chapel-project-init ()
   "Run corral `init' command."
   (interactive)
   (unless (chapel-project-file-exists-p "chpl.json")
-    (chapel-run-command "chpl init")))
+    (chapel-run-command (concat chapel-chapel-bin " init"))))
 
 (defun chapel-project-update ()
   "Run corral `update' command."
   (interactive)
   (if (chapel-project-file-exists-p "chpl.json")
-    (chapel-run-command "chpl update")))
+    (chapel-run-command (concat chapel-chapel-bin " update"))))
 
 (defun chapel-project-open ()
   "Open `v.mod' file."
@@ -445,12 +475,14 @@ Optional argument PATH ."
          (tags-buffer2 (get-buffer (format "TAGS<%s>" (chapel-project-name)))))
     (if tags-buffer (kill-buffer tags-buffer))
     (if tags-buffer2 (kill-buffer tags-buffer2)))
-  (let* ((chapel-path (string-trim (shell-command-to-string "which chpl")))
-          (chapel-executable (string-trim (shell-command-to-string (concat
-                                                                     "readlink -f "
-                                                                     chapel-path))))
-          (packages-path (concat (file-name-directory chapel-executable)
-                           "../../modules"))
+  (let* ((chapel-path                   ;
+           (string-trim (shell-command-to-string (concat "which "
+                                                   chapel-chapel-bin))))
+          (chapel-executable            ;
+            (string-trim (shell-command-to-string (concat "readlink -f "
+                                                    chapel-path))))
+          (packages-path                ;
+            (concat (file-name-directory chapel-executable) "../../modules"))
           (ctags-params                 ;
             (concat
               "ctags --languages=-chapel --langdef=chapel --langmap=chapel:.chpl "
@@ -462,11 +494,10 @@ Optional argument PATH ."
               "--regex-chapel='/^[ \\t]*type[ \\t]+([A-Za-z0-9_]+)/\\1/t,type/' "
               "--regex-chapel='/^[ \\t]*enum[ \\t]+([A-Za-z0-9_]+)/\\1/e,enum/' "
               "--regex-chapel='/^[ \\t]*module[ \\t]+([A-Za-z0-9_]+)/\\1/m,module/' " ;
-              "-e -R . " packages-path " >/dev/null 2>&1")))
+              "-e -R . " packages-path)))
     (when (file-exists-p packages-path)
       (setq default-directory (chapel-project-root))
-      ;; (message "ctags:%s" (shell-command-to-string ctags-params))
-      (shell-command ctags-params)
+      (message "ctags:%s" (shell-command-to-string ctags-params))
       (chapel-load-tags))))
 
 (defun chapel-load-tags
@@ -484,20 +515,22 @@ Optional argument BUILD ."
   "Format the current buffer using the 'chpl fmt'."
   (interactive)
   (when (eq major-mode 'chapel-mode)
-    ;; (shell-command (concat  "chpl fmt " (buffer-file-name)))
-    ;; (revert-buffer :ignore-auto :noconfirm)
     (js-mode)
     (indent-region (point-min)
       (point-max))
     (chapel-mode)))
 
+(defun chapel-before-save-hook ()
+  "Before save hook."
+  (when (eq major-mode 'chapel-mode)
+    (if chapel-format-on-save (chapel-format-buffer))))
+
 (defun chapel-after-save-hook ()
   "After save hook."
   (when (eq major-mode 'chapel-mode)
-    (chapel-format-buffer)
     (if (not (executable-find "ctags"))
       (message "Could not locate executable '%s'" "ctags")
-      (chapel-build-tags))))
+      (if chapel-use-ctags (chapel-build-tags)))))
 
 ;;;###autoload
 (define-derived-mode chapel-mode prog-mode
@@ -507,12 +540,12 @@ Optional argument BUILD ."
   ;;
   (setq-local require-final-newline mode-require-final-newline)
   (setq-local parse-sexp-ignore-comments t)
-  (setq-local comment-start "/*")
-  (setq-local comment-end "*/")
+  (setq-local comment-start "// ")
+  (setq-local comment-end "")
   (setq-local comment-start-skip "\\(//+\\|/\\*+\\)\\s *")
   ;;
   (setq-local indent-tabs-mode nil)
-  (setq-local tab-width 2)
+  (setq-local tab-width chapel-indent-offset)
   (setq-local buffer-file-coding-system 'utf-8-unix)
   ;;
   (setq-local electric-indent-chars (append "{}():;," electric-indent-chars))
@@ -539,6 +572,7 @@ Optional argument BUILD ."
        ("module" "^[ \t]*module[ \t]+\\([A-Za-z0-9_]+\\)" 1)))
   (imenu-add-to-menubar "Index")
   ;;
+  (add-hook 'before-save-hook #'chapel-before-save-hook nil t)
   (add-hook 'after-save-hook #'chapel-after-save-hook nil t)
   (chapel-load-tags))
 
