@@ -1,11 +1,27 @@
 (require 'package)
 (unless package--initialized (package-initialize))
 
+;;; `y-or-n-p'
+(fset 'yes-or-no-p 'y-or-n-p)
+
 ;;; `package-download'
 (defun package-download (pkg)
   (when (not (package-installed-p pkg))
     (progn (unless package-archive-contents (package-refresh-contents))
       (package-install pkg))))
+
+;;; display line numbers
+(if (version<= "26.0.50" emacs-version )
+  (progn
+    (require 'display-line-numbers)
+    (global-display-line-numbers-mode 1))
+  (progn
+    (setq linum-mode t)
+    (setq linum-format "%4d")
+    (global-linum-mode 1)))
+
+;;; display column number
+(setq column-number-mode t)
 
 ;;; `whitespace' settings
 (require 'whitespace)
@@ -73,6 +89,14 @@
 (define-key hl-todo-mode-map (kbd "C-c p") 'hl-todo-previous)
 (define-key hl-todo-mode-map (kbd "C-c n") 'hl-todo-next)
 (define-key hl-todo-mode-map (kbd "C-c o") 'hl-todo-occur)
+
+;;; `nyan-mode'
+(package-download 'nyan-mode)
+(if (display-graphic-p)
+  (progn
+    (require 'nyan-mode)
+    (nyan-start-animation)
+    (nyan-mode 1)))
 
 ;;; `chapel' settings
 (package-download 'chapel-mode)
