@@ -1,6 +1,17 @@
 (require 'package)
 (unless package--initialized (package-initialize))
 
+(setq package-archives ;;
+  '(("gnu" . "https://elpa.gnu.org/packages/")
+     ("melpa" . "https://melpa.org/packages/")
+     ("org" . "http://orgmode.org/elpa/")))
+
+;;; If you live in China
+;; (setq package-archives ;;
+  ;; '(("gnu-tuna" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
+     ;; ("org-tuna" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/org/")
+     ;; ("melpa-tuna" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")))
+
 ;;; `y-or-n-p'
 (fset 'yes-or-no-p 'y-or-n-p)
 
@@ -43,32 +54,6 @@
 (require 'company-ctags)
 (with-eval-after-load 'company (company-ctags-auto-setup))
 
-;;; `rainbow-delimiters' settings
-(require 'rainbow-delimiters)
-(custom-set-faces
-  ;; custom-set-faces was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
-  '(rainbow-delimiters-depth-1-face ((t
-                                       (:foreground "SlateGray"))))
-  '(rainbow-delimiters-depth-2-face ((t
-                                       (:foreground "LightGreen"))))
-  '(rainbow-delimiters-depth-3-face ((t
-                                       (:foreground "SeaGreen"))))
-  '(rainbow-delimiters-depth-4-face ((t
-                                       (:foreground "khaki"))))
-  '(rainbow-delimiters-depth-5-face ((t
-                                       (:foreground "HotPink2"))))
-  '(rainbow-delimiters-depth-6-face ((t
-                                       (:foreground "DarkGreen"))))
-  '(rainbow-delimiters-depth-7-face ((t
-                                       (:foreground "DodgerBlue"))))
-  '(rainbow-delimiters-depth-8-face ((t
-                                       (:foreground "orange"))))
-  '(rainbow-delimiters-depth-9-face ((t
-                                       (:foreground "brown")))))
-
 ;;; `fci' settings
 (package-download 'fill-column-indicator)
 (require 'fill-column-indicator)
@@ -86,12 +71,12 @@
      ("DEBUG" . "DarkCyan")
      ("GOTCHA" . "red")
      ("STUB" . "DarkGreen")))
-(define-key hl-todo-mode-map (kbd "C-c p") 'hl-todo-previous)
-(define-key hl-todo-mode-map (kbd "C-c n") 'hl-todo-next)
-(define-key hl-todo-mode-map (kbd "C-c o") 'hl-todo-occur)
+(define-key hl-todo-mode-map (kbd "C-c p") #'hl-todo-previous)
+(define-key hl-todo-mode-map (kbd "C-c n") #'hl-todo-next)
+(define-key hl-todo-mode-map (kbd "C-c o") #'hl-todo-occur)
 
 ;;; `nyan-mode'
-(package-download 'nyan-mode)
+;; (package-download 'nyan-mode)
 (if (display-graphic-p)
   (progn
     (require 'nyan-mode)
@@ -105,12 +90,11 @@
 (setq chapel-use-ctags t)
 (setq chapel-format-on-save t)
 
-(define-key chapel-mode-map (kbd "<f6>")  'chapel-menu)
-(define-key chapel-mode-map (kbd "C-c C-f") 'chapel-format-buffer)
+(define-key chapel-mode-map (kbd "<f6>")  #'chapel-menu)
+(define-key chapel-mode-map (kbd "C-c C-f") #'chapel-format-buffer)
 
 (add-hook 'chapel-mode-hook ;;
   #'(lambda ()
       (whitespace-mode 1)
       (hl-todo-mode 1)
-      (fci-mode 1)
-      (rainbow-delimiters-mode 1)))
+      (fci-mode 1)))
