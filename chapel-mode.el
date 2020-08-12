@@ -85,6 +85,7 @@
 
 (defvar chapel-mode-map
   (let ((map (make-keymap)))
+    (substitute-key-definition 'c-electric-brace nil chapel-mode-map)
     (define-key map (kbd "C-c C-f") 'chapel-format-buffer) ;
     map)
   "Keymap for Chapel major mode.")
