@@ -359,8 +359,10 @@ Optional argument PATH ."
 (defun chapel-run-command (command &optional Path)
   "Return `COMMAND' in the root of the Chapel project.
 Optional argument PATH ."
-  (setq default-directory (if Path Path (chapel-project-root Path)))
-  (compile command))
+  (let ((oldir default-directory))
+    (setq default-directory (if Path Path (chapel-project-root Path)))
+    (compile command)
+    (setq default-directory oldir)))
 
 (defun chapel-project-build ()
   "Build project with v."
@@ -498,9 +500,11 @@ Optional argument PATH ."
               "--regex-chapel='/^[ \\t]*module[ \\t]+([A-Za-z0-9_]+)/\\1/m,module/' " ;
               "-e -R . " packages-path)))
     (when (file-exists-p packages-path)
-      (setq default-directory (chapel-project-root))
-      (message "ctags:%s" (shell-command-to-string ctags-params))
-      (chapel-load-tags))))
+      (let ((oldir default-directory))
+        (setq default-directory (chapel-project-root))
+        (message "ctags:%s" (shell-command-to-string ctags-params))
+        (chapel-load-tags)
+        (setq default-directory oldir)))))
 
 (defun chapel-load-tags
   (&optional
@@ -518,6 +522,9 @@ Optional argument BUILD ."
   (interactive)
   (when (eq major-mode 'chapel-mode)
     (js-mode)
+    (setq indent-tabs-mode nil)
+    (setq tab-width 8)
+    (setq buffer-file-coding-system 'utf-8-unix)
     (indent-region (point-min)
       (point-max))
     (chapel-mode)))
