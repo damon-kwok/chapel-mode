@@ -523,6 +523,8 @@ Optional argument BUILD ."
   (when (eq major-mode 'chapel-mode)
     (js-mode)
     (setq-local js-indent-level chapel-indent-offset)
+    (setq-local js--possibly-braceless-keyword-re ;;
+      (js--regexp-opt-symbol chapel-indent-keywords))
     (indent-region (point-min)
       (point-max))
     (chapel-mode)))
