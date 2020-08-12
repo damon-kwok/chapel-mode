@@ -6,6 +6,7 @@
 # Chapel Mode
 
 An Emacs major mode for the [Chapel](https://chapel-lang.org/) programming language.
+Requires Emacs 25.1 or later.
 
 - Screenshot
 
@@ -44,11 +45,12 @@ it's too simple to need any).
 
 ```elisp
 (require 'chapel-mode)
-(define-key chapel-mode-map (kbd "M-z") 'chapel-menu)
+
+(setq chapel-use-ctags t)
+(setq chapel-format-on-save t)
+
 (define-key chapel-mode-map (kbd "<f6>")  'chapel-menu)
 (define-key chapel-mode-map (kbd "C-c C-f") 'chapel-format-buffer)
-
-(with-eval-after-load 'company (company-ctags-auto-setup))
 ```
 
 ### Using [use-package](https://github.com/jwiegley/use-package) and [straight.el](https://github.com/raxod502/straight.el)
@@ -69,3 +71,7 @@ it's too simple to need any).
 
 (with-eval-after-load 'company (company-ctags-auto-setup))
 ```
+
+### for Emacs beginner
+
+- [.emacs](https://github.com/damon-kwok/chapel-mode/blob/master/examples/for-beginner/.emacs)
