@@ -255,7 +255,7 @@
      (,chapel-operator-functions-regexp . font-lock-builtin-face)
 
      ;; type definitions
-     ("\\(class\\|struct|\\|module\\|use\\|require\\|import\\)[ \t]+\\([A-Za-z0-9_]*\\)"
+     ("\\(class\\|record\\|enum\\|union\\|struct|\\|module\\|use\\|require\\|import\\)[ \t]+\\([A-Za-z0-9_]*\\)"
        2 'font-lock-type-face)
 
      ;; method definitions
@@ -270,15 +270,17 @@
      ("\\([A-Za-z0-9_]*\\)[ \t]*(" 1 'font-lock-function-name-face)
 
      ;; variable values
-     ("\\(var\\|const\\|let\\)[ \t]+\\([A-Za-z0-9_]+\\)[ \t]*:[ \t]*\\([A-Za-z0-9_]+\\)"
+     ("\\(var\\|const\\|let\\)[ \t]+\\([A-Za-z0-9_]+\\)[ \t]*:[ \t]*\\([a-z_][A-Za-z0-9_]+\\)"
        3 'font-lock-variable-name-face)
 
      ;; type references
+     ("\\(var\\|const\\|let\\)[ \t]+\\([A-Za-z0-9_]+\\)[ \t]*:[ \t]*\\([A-Z_][A-Za-z0-9_]+\\)"
+       3 'font-lock-type-face)
      ("[^a-z_]\\([A-Z][A-Za-z0-9_]*\\)\\." 1 'font-lock-type-face)
      (":[ \t]\\([A-Za-z_][A-Za-z0-9_]*\\)" 1 'font-lock-type-face)
 
      ;; variable references
-     ("[^A-Z]\\([a-z_][A-Za-z_0-9$]*\\)" 1 'font-lock-variable-name-face)
+     ("\\([a-z_][A-Za-z_0-9$]*\\)" 1 'font-lock-variable-name-face)
 
      ;; delimiter: modifier
      ("\\(!=\\|\\.\\.\\.\\|\\.\\.\\)" 1 'font-lock-warning-face)
