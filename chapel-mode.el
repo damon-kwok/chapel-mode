@@ -255,7 +255,7 @@
      (,chapel-operator-functions-regexp . font-lock-builtin-face)
 
      ;; type definitions
-     ("\\(class\\|record\\|enum\\|union\\|struct|\\|module\\|use\\|require\\|import\\)[ \t]+\\([A-Za-z0-9_]*\\)"
+     ("\\(class\\|record\\|type\\|enum\\|union\\|struct|\\|module\\|use\\|require\\|import\\)[ \t]+\\([A-Za-z0-9_]*\\)"
        2 'font-lock-type-face)
 
      ;; method definitions
@@ -267,7 +267,7 @@
        'font-lock-variable-name-face)
 
      ;; enum definitions
-     ("^[ \t]*\\(e[A-Z][A-Za-z0-9_]*\\)[ \t]*[,]*" 1 'font-lock-constant-face)
+     ("[^A-Za-z_]\\(e[A-Z][A-Za-z0-9_]*\\)[ \t]*[,]*" 1 'font-lock-constant-face)
 
      ;; method references
      ("\\([A-Za-z0-9_]*\\)[ \t]*(" 1 'font-lock-function-name-face)
