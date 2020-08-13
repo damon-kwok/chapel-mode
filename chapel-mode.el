@@ -266,6 +266,9 @@
      ("\\(var\\|const\\|let\\|param\\|type\\)[ \t]+\\([A-Za-z0-9_]+\\)" 2
        'font-lock-variable-name-face)
 
+     ;; enum definitions
+     ("^[ \t]*\\(e[A-Z][A-Za-z0-9_]*\\)[ \t]*[,]*" 1 'font-lock-constant-face)
+
      ;; method references
      ("\\([A-Za-z0-9_]*\\)[ \t]*(" 1 'font-lock-function-name-face)
 
