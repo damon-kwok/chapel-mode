@@ -160,7 +160,7 @@
      "lifetime" "where"                          ;
      "sparse"                                    ;
      "in" "out" "inout" "ref"                    ;
-     "halt" "compilerError"                      ;
+     "halt" "compilerError" "refTo" "borrow"     ;
      "defer"                                     ;
      "try" "catch" "throws"                      ;
      "receiver"                                  ;
