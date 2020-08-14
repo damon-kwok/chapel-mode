@@ -16,12 +16,12 @@ Requires Emacs 25.1 or later.
 
 - [x] Syntax highlighting (font-lock)
 - [x] Indentation
-- [x] Workspace support
 - [x] Auto format on save
 - [x] Compilation integration
 - [x] Code navigation (using `imenu`)
 - [x] Go to definition (using `ctags`)
-- [x] Code completion (using `company-mode`)
+<!-- - [x] Workspace support -->
+<!-- - [x] Code completion (using `company-mode`) -->
 <!-- - [x] TODO highlighting -->
 <!-- - [x] Rainbow delimiters -->
 <!-- - [x] Whitespace character dsiplay -->
@@ -64,12 +64,9 @@ it's too simple to need any).
              :files ("tokens" "chapel-mode.el"))
   :config
   :bind-keymap
-  ("M-z" . chapel-menu)
   ("<f6>" . chapel-menu)
   ("C-c C-f" . chapel-format-buffer)
   :mode ("\\.chpl\\'" . 'chapel-mode))
-
-(with-eval-after-load 'company (company-ctags-auto-setup))
 ```
 
 ### for Emacs beginner
