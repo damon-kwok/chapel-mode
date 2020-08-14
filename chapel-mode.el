@@ -255,6 +255,7 @@
      ;; type declaration
      ("\\(class\\|record\\|type\\|enum\\|union\\|struct|\\|module\\|use\\|require\\|import\\)[ \t]+\\([A-Za-z0-9_]*\\)"
        2 'font-lock-type-face)
+     ("new[ \t]+\\([A-Za-z0-9_]*\\)[ \t]*(" 1 'font-lock-type-face)
      ("\\([a-z][A-Za-z0-9_]*_t\\)[^A-Za-z0-9_]" 1 'font-lock-type-face)
      ("[,([][ \t]*\\([A-Z][A-Za-z0-9_]*\\)" 1 'font-lock-type-face)
      ("\\([A-Z][A-Za-z0-9_]*\\)[ \t]*[,)]]" 1 'font-lock-type-face)
@@ -574,7 +575,6 @@ Optional argument BUILD ."
   ;;
   (setq-local font-lock-defaults '(chapel-font-lock-keywords))
   (font-lock-flush)
-
   ;;
   (setq-local imenu-generic-expression ;;
     '(("TODO" ".*TODO:[ \t]*\\(.*\\)$" 1)
