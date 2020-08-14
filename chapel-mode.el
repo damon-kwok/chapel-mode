@@ -55,6 +55,7 @@
 (defgroup chapel nil
   "Support for Chapel code."
   :link '(url-link "https://chapel-lang.org/")
+  :tag "Chapel"
   :group 'languages)
 
 (defcustom chapel-indent-offset 2
@@ -85,9 +86,10 @@
 
 (defvar chapel-mode-map
   (let ((map (make-keymap)))
-    (substitute-key-definition 'c-electric-paren nil map)
-    (substitute-key-definition 'c-electric-brace nil map)
-    (define-key map (kbd "C-c C-f") 'chapel-format-buffer) ;
+    (substitute-key-definition #'c-electric-paren nil map)
+    (substitute-key-definition #'c-electric-brace nil map)
+    (define-key map (kbd "C-M-\\") #'chapel-format-buffer)
+    (define-key map (kbd "C-c C-f") #'chapel-format-buffer) ;
     map)
   "Keymap for Chapel major mode.")
 
@@ -150,20 +152,21 @@
   "Chapel preprocessor keywords.")
 
 (defconst chapel-careful-keywords
-  '("use" "import" "require"                     ;
-     "on"                                        ;
-     "sync" "single" "atomic" "serial"           ;
-     "begin" "cobegin" "coforall" "forall"       ;
-     "break" "continue" "label" "return" "yield" ;
-     "new" "delete" "opaque"                     ;
-     "owned" "shared" "unmanaged" "borrowed"     ;
-     "lifetime" "where"                          ;
-     "sparse"                                    ;
-     "in" "out" "inout" "ref"                    ;
-     "halt" "compilerError" "refTo" "borrow"     ;
-     "defer"                                     ;
-     "try" "catch" "throws"                      ;
-     "receiver"                                  ;
+  '("use" "import" "require"                          ;
+     "on"                                             ;
+     "sync" "single" "atomic" "serial"                ;
+     "lock" "unlock"                                  ;
+     "begin" "cobegin" "coforall" "forall"            ;
+     "break" "continue" "label" "return" "yield"      ;
+     "new" "delete" "opaque"                          ;
+     "owned" "shared" "unmanaged" "borrowed"          ;
+     "lifetime" "where"                               ;
+     "sparse"                                         ;
+     "in" "out" "inout" "ref"                         ;
+     "syserr" "halt" "compilerError" "refTo" "borrow" ;
+     "defer"                                          ;
+     "try" "catch" "throws"                           ;
+     "receiver"                                       ;
      "channel" "domain")
   "Chapel language careful keywords.")
 
@@ -185,6 +188,7 @@
      "full" "empty" "noinit"                      ;
      "nil" "none" "gasnet" "ofi" "ugni"           ;
      "indices" "locale" "numLocales" "id" "index" ;
+     "numLocales" "LocaleSpace" "Locales"         ;
      "defaultValues")
   "Common constants.")
 
@@ -200,17 +204,14 @@
   "Regular expression for matching keywords.")
 
 (defconst chapel-declaration-keywords-regexp
-                                        ;
   (regexp-opt chapel-declaration-keywords 'words)
   "Regular expression for matching declaration keywords.")
 
 (defconst chapel-preprocessor-keywords-regexp
-                                        ;
   (regexp-opt chapel-preprocessor-keywords 'words)
   "Regular expression for matching preprocessor keywords.")
 
 (defconst chapel-careful-keywords-regexp
-                                        ;
   (regexp-opt chapel-careful-keywords 'words)
   "Regular expression for matching careful keywords.")
 
@@ -218,29 +219,21 @@
   (regexp-opt chapel-builtin-keywords 'words)
   "Regular expression for matching builtin type.")
 
-(defconst chapel-constant-regexp
-                                        ;
-  (regexp-opt chapel-constants 'words)
+(defconst chapel-constant-regexp (regexp-opt chapel-constants 'words)
   "Regular expression for matching constants.")
 
 (defconst chapel-operator-functions-regexp
-                                        ;
   (regexp-opt chapel-operator-functions 'words)
   "Regular expression for matching operator functions.")
 
 (defconst chapel-font-lock-keywords
   `(
-     ;; bytes
-     ("\\(b\\)\"" 1 'font-lock-constant-face)
-
      ;; builtin
+     ("\\([A-Za-z]+\\)\"" 1 'font-lock-builtin-face)
      (,chapel-builtin-keywords-regexp . font-lock-builtin-face)
 
      ;; careful
      (,chapel-careful-keywords-regexp . font-lock-warning-face)
-
-     ;; constants references
-     (,chapel-constant-regexp . font-lock-constant-face)
 
      ;; declaration
      (,chapel-declaration-keywords-regexp . font-lock-keyword-face)
@@ -249,14 +242,23 @@
      (,chapel-preprocessor-keywords-regexp . font-lock-preprocessor-face)
 
      ;; keywords
-     (,chapel-keywords-regexp . font-lock-keyword-face) ;;font-lock-keyword-face
+     (,chapel-keywords-regexp . font-lock-keyword-face)
 
      ;; operator methods
      (,chapel-operator-functions-regexp . font-lock-builtin-face)
 
-     ;; type definitions
+     ;; constants references
+     (,chapel-constant-regexp . font-lock-constant-face)
+     ("[,;( \t]\\([A-Z]+\\)[ \t]*[,;)]" 1 'font-lock-constant-face)
+     ("[=,(][ \t]*\\([A-Z][A-Z_]+\\)" 1 'font-lock-constant-face)
+
+     ;; type declaration
      ("\\(class\\|record\\|type\\|enum\\|union\\|struct|\\|module\\|use\\|require\\|import\\)[ \t]+\\([A-Za-z0-9_]*\\)"
        2 'font-lock-type-face)
+     ("\\([a-z][A-Za-z0-9_]*_t\\)[^A-Za-z0-9_]" 1 'font-lock-type-face)
+     ("[,([][ \t]*\\([A-Z][A-Za-z0-9_]*\\)" 1 'font-lock-type-face)
+     ("\\([A-Z][A-Za-z0-9_]*\\)[ \t]*[,)]]" 1 'font-lock-type-face)
+     ("\\([A-Z][A-Za-z0-9_]*\\)\\?" 1 'font-lock-type-face)
 
      ;; method definitions
      ("\\(proc\\|iter\\)[ \t]+\\([A-Za-z0-9_]+\\)" 2
@@ -267,23 +269,30 @@
        'font-lock-variable-name-face)
 
      ;; enum definitions
-     ("[^A-Za-z_]\\(e[A-Z][A-Za-z0-9_]*\\)[ \t]*[,]*" 1 'font-lock-constant-face)
+     ("[^A-Za-z_]\\(e[A-Z][A-Za-z0-9_]*\\)[ \t]*[,]*" 1
+       'font-lock-constant-face)
 
      ;; method references
      ("\\([A-Za-z0-9_]*\\)[ \t]*(" 1 'font-lock-function-name-face)
 
      ;; variable values
      ("\\(var\\|const\\|let\\)[ \t]+\\([A-Za-z0-9_]+\\)[ \t]*:[ \t]*\\([a-z_][A-Za-z0-9_]+\\)"
-       3 'font-lock-variable-name-face)
+       3 'font-lock-variable-name-face) ;font-lock-variable-name-face
 
      ;; type references
+     ("[ \t,]\\([A-Z][A-Za-z0-9_]*\\)" 1 'font-lock-type-face)
      ("\\(var\\|const\\|let\\)[ \t]+\\([A-Za-z0-9_]+\\)[ \t]*:[ \t]*\\([A-Z_][A-Za-z0-9_]+\\)"
        3 'font-lock-type-face)
      ("[^a-z_]\\([A-Z][A-Za-z0-9_]*\\)\\." 1 'font-lock-type-face)
-     (":[ \t]\\([A-Za-z_][A-Za-z0-9_]*\\)" 1 'font-lock-type-face)
+     (":[ \t]*\\([A-Za-z_][A-Za-z0-9_]*\\)" 1 'font-lock-type-face)
+
+     ;; numeric literals
+     ;; ("[^A-Za-z_]\\([0-9][A-Za-z0-9_]*\\)" 1 'font-lock-constant-face)
+     ("[-+*/=><([{,;&|% \t]+\\([0-9][A-Za-z0-9_-]*\\)" 1
+       'font-lock-constant-face)
 
      ;; variable references
-     ("\\([a-z_][A-Za-z_0-9$]*\\)" 1 'font-lock-variable-name-face)
+     ("[^0-9A-Z]\\([a-z_][A-Za-z_0-9$]*\\)" 1 'font-lock-variable-name-face)
 
      ;; delimiter: modifier
      ("\\(!=\\|\\.\\.\\.\\|\\.\\.\\)" 1 'font-lock-warning-face)
@@ -303,19 +312,8 @@
      ;; delimiter: brackets
      ("\\(\\[\\|\\]\\|[(){}]\\)" 1 'font-lock-comment-delimiter-face)
 
-     ;; numeric literals
-     ;; ("[^A-Za-z_]\\([0-9][A-Za-z0-9_]*\\)" 1 'font-lock-constant-face)
-     ("[ \t/+-/*//=><([{,;&|%]\\([0-9][A-Za-z0-9_-]*\\)" 1
-       'font-lock-constant-face)
-
      ;; method references
      ("\\([a-z_][A-Za-z0-9_]+\\)[ \t]*(" 1 'font-lock-function-name-face)
-
-     ;; parameter
-     ("\\(?:(\\|,\\)\\([a-z_][A-Za-z0-9_]*\\)\\([^ \t\r\n,:)]*\\)" 1
-       'font-lock-variable-name-face)
-     ("\\(?:(\\|,\\)[ \t]+\\([a-z_][A-Za-z0-9_]*\\)\\([^ \t\r\n,:)]*\\)" 1
-       'font-lock-variable-name-face)
 
      ;; character literals
      ("\\('[\\].'\\)" 1 'font-lock-constant-face)
@@ -421,6 +419,7 @@ Optional argument PATH ."
      ["Init" chapel-project-init t]                ;
      ["Open" chapel-project-open t]                ;
      ["Update" chapel-project-update t]            ;
+     ["Format Buffer" chapel-format-buffer t]      ;
      "---"                                         ;
      ("Community"                                  ;
        ["News"                                     ;
@@ -523,10 +522,13 @@ Optional argument BUILD ."
       (if build (chapel-build-tags)))))
 
 (defun chapel-format-buffer ()
-  "Format the current buffer using the 'chpl fmt'."
+  "Format the current buffer."
   (interactive)
   (when (eq major-mode 'chapel-mode)
     (js-mode)
+    (setq-local indent-tabs-mode nil)
+    (setq-local tab-width chapel-indent-offset)
+    ;;
     (setq-local js-indent-level chapel-indent-offset)
     (setq-local js--possibly-braceless-keyword-re ;;
       (js--regexp-opt-symbol chapel-indent-keywords))
@@ -563,6 +565,8 @@ Optional argument BUILD ."
   (setq-local buffer-file-coding-system 'utf-8-unix)
   ;;
   (setq-local electric-indent-chars (append "{}():;," electric-indent-chars))
+  (setq-local js-curly-indent-offset 0)
+  (setq-local js-square-indent-offset 2)
   (setq-local js-indent-level tab-width)
   (setq-local js--possibly-braceless-keyword-re ;;
     (js--regexp-opt-symbol chapel-indent-keywords))
