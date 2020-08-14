@@ -1,25 +1,75 @@
 (require 'package)
 (unless package--initialized (package-initialize))
+(setq package-check-signature nil)
 
-(setq package-archives ;;
-  '(("gnu" . "https://elpa.gnu.org/packages/")
-     ("melpa" . "https://melpa.org/packages/")
-     ("org" . "http://orgmode.org/elpa/")))
+;;; If you live in China, (setq live-in-china? t)
+(setq live-in-china? nil)
 
-;;; If you live in China
-;; (setq package-archives ;;
-  ;; '(("gnu-tuna" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
-     ;; ("org-tuna" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/org/")
-     ;; ("melpa-tuna" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")))
-
-;;; `y-or-n-p'
-(fset 'yes-or-no-p 'y-or-n-p)
+(if live-in-china?
+  (setq package-archives ;;
+    '(("gnu-tuna" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
+       ("org-tuna" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/org/")
+       ("melpa-tuna" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")))
+  (setq package-archives ;;
+    '(("gnu" . "https://elpa.gnu.org/packages/")
+       ("melpa" . "https://melpa.org/packages/")
+       ("org" . "http://orgmode.org/elpa/"))))
 
 ;;; `package-download'
 (defun package-download (pkg)
   (when (not (package-installed-p pkg))
     (progn (unless package-archive-contents (package-refresh-contents))
       (package-install pkg))))
+
+;;; `y-or-n-p'
+(fset 'yes-or-no-p 'y-or-n-p)
+
+;;; `open-file' (don't in new frame)
+(setq ns-pop-up-frames nil)
+
+;;; when file modify with other program: auto update buffer
+(global-auto-revert-mode 1)
+(setq view-read-only t)
+
+;;; replace selected context
+(delete-selection-mode t)
+
+;;; set word wrap
+(global-visual-line-mode t)
+
+;;; set line space(pixel)
+(setq line-spacing 2)
+
+;;; empty line with file
+(setq require-final-newline t)
+
+;;; clipboard X clipboard
+(setq select-enable-clipboard t)
+(setq x-select-enable-clipboard t)
+
+;;; kill process buffer without confirmation?
+(setq kill-buffer-query-functions       ;
+  (delq 'process-kill-buffer-query-function kill-buffer-query-functions))
+
+;;; file time stamp
+(setq time-stamp-active t)
+(setq time-stamp-warn-inactive t)
+
+;;; max delete history (undo)
+(setq kill-ring-max 200)
+
+;;; i don't make backup file
+(setq make-backup-files nil)
+
+;;; auto save
+(auto-save-mode 0)
+
+;;; don't create #filename# temp file
+(setq auto-save-default nil)
+
+;;; delete file to:Recycle Bin (emacs24)
+(setq delete-by-moving-to-trash t)
+
 
 ;;; display line numbers
 (if (version<= "26.0.50" emacs-version )
@@ -43,9 +93,15 @@
 (setq whitespace-display-mappings
   ;; all numbers are unicode codepoint in decimal. e.g. (insert-char 182 1)
   ;; SPACE 32 「 」, 183 MIDDLE DOT 「·」, 46 FULL STOP 「.」
-  '((space-mark 32 [183] [46])
+  '((space-mark 32 [183]
+      [46])
      (newline-mark 10 [182 10])
-     (tab-mark 9 [9655 9] [92 9])))
+     (tab-mark 9 [9655 9]
+       [92 9])))
+
+;;; `editorconfig' settings
+(package-download 'editorconfig)
+(require 'editorconfig)
 
 ;;; `company' settings
 (package-download 'company)
@@ -76,7 +132,7 @@
 (define-key hl-todo-mode-map (kbd "C-c o") #'hl-todo-occur)
 
 ;;; `nyan-mode'
-;; (package-download 'nyan-mode)
+(package-download 'nyan-mode)
 (if (display-graphic-p)
   (progn
     (require 'nyan-mode)
@@ -96,5 +152,6 @@
 (add-hook 'chapel-mode-hook ;;
   #'(lambda ()
       (whitespace-mode 1)
+      (editorconfig-mode 1)
       (hl-todo-mode 1)
       (fci-mode 1)))
