@@ -103,12 +103,27 @@
 (package-download 'editorconfig)
 (require 'editorconfig)
 
+;;; `theme' settings
+(package-download 'solarized-theme)
+;; (load-theme 'solarized-light t)
+(load-theme 'solarized-gruvbox-dark t)
+
 ;;; `company' settings
 (package-download 'company)
 (require 'company)
 (package-download 'company-ctags)
 (require 'company-ctags)
 (with-eval-after-load 'company (company-ctags-auto-setup))
+
+;;; `helm' settings
+(package-download 'helm)
+(package-download 'helm-xref)
+(package-download 'helm-company)
+(require 'helm)
+(helm-mode 1)
+(helm-autoresize-mode 1)
+(require 'helm-company)
+(require 'helm-xref)
 
 ;;; `fci' settings
 (package-download 'fill-column-indicator)
@@ -155,3 +170,17 @@
       (editorconfig-mode 1)
       (hl-todo-mode 1)
       (fci-mode 1)))
+;;;
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(helm-company helm-xref solarized-theme chapel-mode nyan-mode hl-todo fill-column-indicator company-ctags company editorconfig)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
