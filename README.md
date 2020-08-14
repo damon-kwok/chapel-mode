@@ -1,6 +1,6 @@
 [![GitHub license](https://img.shields.io/github/license/damon-kwok/chapel-mode?logo=gnu&.svg)](https://github.com/damon-kwok/chapel-mode/blob/master/COPYING)
 [![Sponsor](https://img.shields.io/badge/Support%20Me-%F0%9F%92%97-ff69b4.svg)](https://www.patreon.com/DamonKwok)
-<!-- [![MELPA](http://melpa.org/packages/chapel-mode-badge.svg)](http://melpa.org/#/chapel-mode) -->
+[![MELPA](http://melpa.org/packages/chapel-mode-badge.svg)](http://melpa.org/#/chapel-mode)
 <!-- [![MELPA Stable](http://stable.melpa.org/packages/chapel-mode-badge.svg)](http://stable.melpa.org/#/chapel-mode) -->
 
 # Chapel Mode
@@ -31,12 +31,12 @@ Requires Emacs 25.1 or later.
 
 ## Installation
 
-### ~~Using MELPA~~ ([COMING SOON](https://github.com/melpa/melpa/pull/7066))
-~~This package can be obtain from
+### Using MELPA
+This package can be obtain from
 [MELPA](http://melpa.org/#/chapel-mode) or
 [MELPA Stable](http://stable.melpa.org/#/chapel-mode). The `master`
 branch is continuously deployed to `MELPA`, and released versions are
-deployed to `MELPA Stable`.~~
+deployed to `MELPA Stable`.
 
 <kbd>M-x package-install [RET] chapel-mode [RET]</kbd>
 
