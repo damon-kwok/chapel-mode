@@ -293,7 +293,8 @@
        'font-lock-constant-face)
 
      ;; variable references
-     ("[^0-9A-Z]\\([a-z_][A-Za-z_0-9$]*\\)" 1 'font-lock-variable-name-face)
+     ;; ("[^0-9A-Z]\\([a-z_][A-Za-z_0-9$]*\\)" 1 'font-lock-variable-name-face)
+     ("\\([a-z_][A-Za-z_0-9$]*\\)" 1 'font-lock-variable-name-face)
 
      ;; delimiter: modifier
      ("\\(!=\\|\\.\\.\\.\\|\\.\\.\\)" 1 'font-lock-warning-face)
