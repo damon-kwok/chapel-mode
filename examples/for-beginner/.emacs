@@ -111,6 +111,7 @@
 ;;; `company' settings
 (package-download 'company)
 (require 'company)
+(setq company-show-numbers t)
 (package-download 'company-ctags)
 (require 'company-ctags)
 (with-eval-after-load 'company (company-ctags-auto-setup))
