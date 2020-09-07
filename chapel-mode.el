@@ -288,9 +288,8 @@
      (":[ \t]*\\([A-Za-z_][A-Za-z0-9_]*\\)" 1 'font-lock-type-face)
 
      ;; numeric literals
-     ;; ("[^A-Za-z_]\\([0-9][A-Za-z0-9_]*\\)" 1 'font-lock-constant-face)
-     ("[-+*/=><([{,;&|% \t]+\\([0-9][A-Za-z0-9_-]*\\)" 1
-       'font-lock-constant-face)
+     ;; ("[^A-Za-z_]+\\([0-9][A-Za-z0-9_]*\\)" 1 'font-lock-constant-face)
+     ("[-+*/=><([{.,;&|%!@#$%^&* \t]+\\([0-9][A-Za-z0-9_-]*\\)" 1 'font-lock-constant-face)
 
      ;; variable references
      ;; ("[^0-9A-Z]\\([a-z_][A-Za-z_0-9$]*\\)" 1 'font-lock-variable-name-face)
