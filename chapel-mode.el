@@ -130,19 +130,18 @@
   "Chapel keywords which indicate a new indentation level.")
 
 (defconst chapel-keywords
-  '("var" "let" "const" "param"
-     ;;
-     "for" "in" "do"                     ;
-     "if" "then" "else"                  ;
-     "select" "when" "otherwise"         ;
-     "while"                             ;
-     "proc" "iter" "lambda"              ;
-     ;; "class" "record" "enum"          ;
-     "forwarding" "impl" "except" "only" ;
+  '("var" "let"                                                ;
+     "in" "inout" "out" "const" "param" "ref" "type" "nothing" ;
+     "for" "do"                                                ;
+     "if" "then" "else"                                        ;
+     "select" "when" "otherwise"                               ;
+     "while"                                                   ;
+     "proc" "iter" "lambda"                                    ;
+     "forwarding" "impl" "except" "only"                       ;
      "with")
   "Chapel language keywords.")
 
-(defconst chapel-declaration-keywords '("type" "module" "record" "class")
+(defconst chapel-declaration-keywords '("module" "record" "class")
   "Chapel declaration keywords.")
 
 (defconst chapel-preprocessor-keywords
@@ -152,17 +151,17 @@
   "Chapel preprocessor keywords.")
 
 (defconst chapel-careful-keywords
-  '("use" "import" "require"                          ;
-     "on"                                             ;
-     "sync" "single" "atomic" "serial"                ;
-     "lock" "unlock"                                  ;
-     "begin" "cobegin" "coforall" "forall"            ;
-     "break" "continue" "label" "return" "yield"      ;
-     "new" "delete" "opaque"                          ;
-     "owned" "shared" "unmanaged" "borrowed"          ;
-     "lifetime" "where"                               ;
-     "sparse"                                         ;
-     "in" "out" "inout" "ref"                         ;
+  '("use" "import" "require"                     ;
+     "on"                                        ;
+     "sync" "single" "atomic" "serial"           ;
+     "lock" "unlock"                             ;
+     "begin" "cobegin" "coforall" "forall"       ;
+     "break" "continue" "label" "return" "yield" ;
+     "new" "delete" "opaque"                     ;
+     "owned" "shared" "unmanaged" "borrowed"     ;
+     "lifetime" "where"                          ;
+     "sparse"                                    ;
+     ;; "in" "out" "inout" "ref"                         ;
      "syserr" "halt" "compilerError" "refTo" "borrow" ;
      "defer"                                          ;
      "try" "catch" "throws"                           ;
@@ -289,7 +288,8 @@
 
      ;; numeric literals
      ;; ("[^A-Za-z_]+\\([0-9][A-Za-z0-9_]*\\)" 1 'font-lock-constant-face)
-     ("[-+*/=><([{.,;&|%!@#$%^&* \t]+\\([0-9][A-Za-z0-9_-]*\\)" 1 'font-lock-constant-face)
+     ("[-+*/=><([{.,;&|%!@#$%^&* \t]+\\([0-9][A-Za-z0-9_-]*\\)" 1
+       'font-lock-constant-face)
 
      ;; variable references
      ;; ("[^0-9A-Z]\\([a-z_][A-Za-z_0-9$]*\\)" 1 'font-lock-variable-name-face)
