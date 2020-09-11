@@ -251,6 +251,9 @@
      ("[,;( \t]\\([A-Z]+\\)[ \t]*[,;)]" 1 'font-lock-constant-face)
      ("[=,(][ \t]*\\([A-Z][A-Z_]+\\)" 1 'font-lock-constant-face)
 
+     ;; fields
+     ("\\.\\([A-Za-z0-9_$]+\\)\\." 1 'font-lock-variable-name-face)
+
      ;; type declaration
      ("\\(class\\|record\\|type\\|enum\\|union\\|struct|\\|module\\|use\\|require\\|import\\)[ \t]+\\([A-Za-z0-9_]*\\)"
        2 'font-lock-type-face)
@@ -277,7 +280,7 @@
 
      ;; variable values
      ("\\(var\\|const\\|let\\)[ \t]+\\([A-Za-z0-9_]+\\)[ \t]*:[ \t]*\\([a-z_][A-Za-z0-9_]+\\)"
-       3 'font-lock-variable-name-face) ;font-lock-variable-name-face
+       3 'font-lock-variable-name-face)
 
      ;; type references
      ("[ \t,]\\([A-Z][A-Za-z0-9_]*\\)" 1 'font-lock-type-face)
