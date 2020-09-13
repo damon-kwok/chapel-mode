@@ -228,7 +228,7 @@
 (defconst chapel-font-lock-keywords
   `(
      ;; builtin
-     ("\\([A-Za-z]+\\)\"" 1 'font-lock-builtin-face)
+     ("\\([A-Za-z$]+\\)\"" 1 'font-lock-builtin-face)
      (,chapel-builtin-keywords-regexp . font-lock-builtin-face)
 
      ;; careful
@@ -248,14 +248,14 @@
 
      ;; constants references
      (,chapel-constant-regexp . font-lock-constant-face)
-     ("[,;( \t]\\([A-Z]+\\)[ \t]*[,;)]" 1 'font-lock-constant-face)
-     ("[=,(][ \t]*\\([A-Z][A-Z_]+\\)" 1 'font-lock-constant-face)
+     ("[,;( \t]\\([A-Z$]+\\)[ \t]*[,;)]" 1 'font-lock-constant-face)
+     ("[=,(][ \t]*\\([A-Z][A-Z_$]+\\)" 1 'font-lock-constant-face)
 
      ;; fields
      ("\\.\\([A-Za-z0-9_$]+\\)\\." 1 'font-lock-variable-name-face)
 
      ;; type declaration
-     ("\\(class\\|record\\|type\\|enum\\|union\\|struct|\\|module\\|use\\|require\\|import\\)[ \t]+\\([A-Za-z0-9_]*\\)"
+     ("\\(class\\|record\\|type\\|enum\\|union\\|struct|\\|module\\|use\\|require\\|import\\)[ \t]+\\([A-Za-z0-9_$]*\\)"
        2 'font-lock-type-face)
      ("new[ \t]+\\([A-Za-z0-9_]*\\)[ \t]*(" 1 'font-lock-type-face)
      ("\\([a-z][A-Za-z0-9_]*_t\\)[^A-Za-z0-9_]" 1 'font-lock-type-face)
@@ -264,30 +264,30 @@
      ("\\([A-Z][A-Za-z0-9_]*\\)\\?" 1 'font-lock-type-face)
 
      ;; method definitions
-     ("\\(proc\\|iter\\)[ \t]+\\([A-Za-z0-9_]+\\)" 2
+     ("\\(proc\\|iter\\)[ \t]+\\([A-Za-z0-9_$]+\\)" 2
        'font-lock-function-name-face)
 
      ;; variable/params definitions
-     ("\\(var\\|const\\|let\\|param\\|type\\)[ \t]+\\([A-Za-z0-9_]+\\)" 2
+     ("\\(var\\|const\\|let\\|param\\|type\\)[ \t]+\\([A-Za-z0-9_$]+\\)" 2
        'font-lock-variable-name-face)
 
      ;; enum definitions
-     ("[^A-Za-z_]\\(e[A-Z][A-Za-z0-9_]*\\)[ \t]*[,]*" 1
+     ("[^A-Za-z_]\\(e[A-Z][A-Za-z0-9_$]*\\)[ \t]*[,]*" 1
        'font-lock-constant-face)
 
      ;; method references
-     ("\\([A-Za-z0-9_]*\\)[ \t]*(" 1 'font-lock-function-name-face)
+     ("\\([A-Za-z0-9_$]*\\)[ \t]*(" 1 'font-lock-function-name-face)
 
      ;; variable values
-     ("\\(var\\|const\\|let\\)[ \t]+\\([A-Za-z0-9_]+\\)[ \t]*:[ \t]*\\([a-z_][A-Za-z0-9_]+\\)"
+     ("\\(var\\|const\\|let\\)[ \t]+\\([A-Za-z0-9_]+\\)[ \t]*:[ \t]*\\([a-z_][A-Za-z0-9_$]+\\)"
        3 'font-lock-variable-name-face)
 
      ;; type references
-     ("[ \t,]\\([A-Z][A-Za-z0-9_]*\\)" 1 'font-lock-type-face)
-     ("\\(var\\|const\\|let\\)[ \t]+\\([A-Za-z0-9_]+\\)[ \t]*:[ \t]*\\([A-Z_][A-Za-z0-9_]+\\)"
+     ("[ \t,]\\([A-Z][A-Za-z0-9_$]*\\)" 1 'font-lock-type-face)
+     ("\\(var\\|const\\|let\\)[ \t]+\\([A-Za-z0-9_]+\\)[ \t]*:[ \t]*\\([A-Z_][A-Za-z0-9_$]+\\)"
        3 'font-lock-type-face)
-     ("[^a-z_]\\([A-Z][A-Za-z0-9_]*\\)\\." 1 'font-lock-type-face)
-     (":[ \t]*\\([A-Za-z_][A-Za-z0-9_]*\\)" 1 'font-lock-type-face)
+     ("[^a-z_]\\([A-Z][A-Za-z0-9_$]*\\)\\." 1 'font-lock-type-face)
+     (":[ \t]*\\([A-Za-z_][A-Za-z0-9_$]*\\)" 1 'font-lock-type-face)
 
      ;; numeric literals
      ;; ("[^A-Za-z_]+\\([0-9][A-Za-z0-9_]*\\)" 1 'font-lock-constant-face)
@@ -317,13 +317,13 @@
      ("\\(\\[\\|\\]\\|[(){}]\\)" 1 'font-lock-comment-delimiter-face)
 
      ;; method references
-     ("\\([a-z_][A-Za-z0-9_]+\\)[ \t]*(" 1 'font-lock-function-name-face)
+     ("\\([a-z_][A-Za-z0-9_$]+\\)[ \t]*(" 1 'font-lock-function-name-face)
 
      ;; character literals
      ("\\('[\\].'\\)" 1 'font-lock-constant-face)
 
      ;; type references
-     ("\\([A-Z][A-Za-z0-9_]*\\)" 1 'font-lock-type-face))
+     ("\\([A-Z][A-Za-z0-9_$]*\\)" 1 'font-lock-type-face))
   "An alist mapping regexes to font-lock faces.")
 
 (defun chapel-project-root-p (path)
