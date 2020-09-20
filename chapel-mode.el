@@ -249,10 +249,12 @@
      ;; constants references
      (,chapel-constant-regexp . font-lock-constant-face)
      ("[,;( \t]\\([A-Z$]+\\)[ \t]*[,;)]" 1 'font-lock-constant-face)
-     ("[=,(][ \t]*\\([A-Z][A-Z_$]+\\)" 1 'font-lock-constant-face)
+     ;; ("[=,(][ \t]*\\([A-Z][A-Z_$]+\\)" 1 'font-lock-constant-face)
+     ("[=][ \t]*\\([A-Z][A-Z_$]+\\)" 1 'font-lock-constant-face)
 
      ;; fields
      ("\\.\\([A-Za-z0-9_$]+\\)\\." 1 'font-lock-variable-name-face)
+     ("[(][ \t,]*\\([a-zA-Z][A-Za-z0-9_$]*\\)" 1 'font-lock-variable-name-face)
 
      ;; type declaration
      ("\\(class\\|record\\|type\\|enum\\|union\\|struct|\\|module\\|use\\|require\\|import\\)[ \t]+\\([A-Za-z0-9_$]*\\)"
