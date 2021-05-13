@@ -330,7 +330,7 @@
 
 (defun chapel-project-root-p (path)
   "Return t if directory `PATH' is the root of the Chapel project."
-  (let* ((files '("v.mod" "make.bat" "Makefile"              ;
+  (let* ((files '("Mason.toml" "make.bat" "Makefile"              ;
                    "Dockerfile" ".editorconfig" ".gitignore" ;
                    ".git" ".svn" ".hg" ".bzr"))
           (foundp nil))
@@ -376,7 +376,7 @@ Optional argument PATH ."
     (setq default-directory oldir)))
 
 (defun chapel-project-build ()
-  "Build project with v."
+  "Build project with mason."
   (interactive)
   (if (chapel-project-file-exists-p "Makefile")
     (chapel-run-command "make")
@@ -395,7 +395,7 @@ Optional argument PATH ."
     (chapel-run-command "mason update")))
 
 (defun chapel-project-open ()
-  "Open `v.mod' file."
+  "Open `Mason.toml' file."
   (interactive)
   (if (chapel-project-file-exists-p "Mason.toml")
     (find-file (concat (chapel-project-root) "Mason.toml"))))
@@ -467,7 +467,7 @@ Optional argument PATH ."
   _q_: Quit"                            ;
   ("b" chapel-project-build "Build")
   ("r" chapel-project-run "Run")
-  ("o" chapel-project-open "Open chpl.json")
+  ("o" chapel-project-open "Open Mason.toml")
   ("i" chapel-project-init "chpl init")
   ("u" chapel-project-update "chpl update")
   ("1" (chapel-run-command "xdg-open https://twitter.com/ChapelLanguage")
