@@ -21,6 +21,7 @@ Requires Emacs 25.1 or later.
 - [x] Compilation integration
 - [x] Code navigation (using `imenu`)
 - [x] Go to definition (using `ctags`)
+- [x] `mason` integration
 <!-- - [x] Workspace support -->
 <!-- - [x] Code completion (using `company-mode`) -->
 <!-- - [x] TODO highlighting -->

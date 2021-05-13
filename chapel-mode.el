@@ -380,25 +380,25 @@ Optional argument PATH ."
   (interactive)
   (if (chapel-project-file-exists-p "Makefile")
     (chapel-run-command "make")
-    (chapel-run-command (concat chapel-chapel-bin " -c " (buffer-name)))))
+    (chapel-run-command "mason build")))
 
 (defun chapel-project-init ()
   "Run corral `init' command."
   (interactive)
-  (unless (chapel-project-file-exists-p "chpl.json")
-    (chapel-run-command (concat chapel-chapel-bin " init"))))
+  (unless (chapel-project-file-exists-p "Mason.toml")
+    (chapel-run-command "mason init -d")))
 
 (defun chapel-project-update ()
   "Run corral `update' command."
   (interactive)
-  (if (chapel-project-file-exists-p "chpl.json")
-    (chapel-run-command (concat chapel-chapel-bin " update"))))
+  (if (chapel-project-file-exists-p "Mason.lock")
+    (chapel-run-command "mason update")))
 
 (defun chapel-project-open ()
   "Open `v.mod' file."
   (interactive)
-  (if (chapel-project-file-exists-p "v.mod")
-    (find-file (concat (chapel-project-root) "v.mod"))))
+  (if (chapel-project-file-exists-p "Mason.toml")
+    (find-file (concat (chapel-project-root) "Mason.toml"))))
 
 (defun chapel-buffer-dirname ()
   "Return current buffer directory file name."
@@ -417,7 +417,8 @@ Optional argument PATH ."
       ((file-exists-p bin2)
         (chapel-run-command bin2))
       ((file-exists-p bin2)
-        (chapel-run-command bin3)))))
+        (chapel-run-command bin3))
+      (t (chapel-run-command "mason run")))))
 
 (easy-menu-define chapel-mode-menu chapel-mode-map ;
   "Menu for Chapel mode."                          ;
@@ -468,7 +469,7 @@ Optional argument PATH ."
   ("r" chapel-project-run "Run")
   ("o" chapel-project-open "Open chpl.json")
   ("i" chapel-project-init "chpl init")
-  ("u" chapel-project-update "chpl udate")
+  ("u" chapel-project-update "chpl update")
   ("1" (chapel-run-command "xdg-open https://twitter.com/ChapelLanguage")
     "News")
   ("2" (chapel-run-command
