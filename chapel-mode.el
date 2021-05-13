@@ -418,7 +418,7 @@ Optional argument PATH ."
         (chapel-run-command bin2))
       ((file-exists-p bin2)
         (chapel-run-command bin3))
-      (t (chapel-run-command "mason run")))))
+      (t (chapel-run-command "mason run --build --release --force")))))
 
 (easy-menu-define chapel-mode-menu chapel-mode-map ;
   "Menu for Chapel mode."                          ;
