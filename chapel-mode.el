@@ -391,7 +391,7 @@ Optional argument PATH ."
 (defun chapel-project-update ()
   "Run corral `update' command."
   (interactive)
-  (if (chapel-project-file-exists-p "Mason.lock")
+  (if (chapel-project-file-exists-p "Mason.toml")
     (chapel-run-command "mason update")))
 
 (defun chapel-project-open ()
